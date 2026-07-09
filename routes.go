@@ -14,17 +14,18 @@ func NewRouter() *chi.Mux {
 	r.Post("/bounties", handlers.CreateBounty)
 	r.Get("/bounties/{id}", handlers.GetBounty)
 	r.Put("/bounties/{id}", handlers.UpdateBounty)
-	r.Delete("/bounties/{id}", handlers.DeleteBounty)
+	r.Post("/bounties/{id}/assign", handlers.AssignBounty) // new
 
-	// People
-	r.Get("/people", handlers.ListPeople)
-	r.Get("/people/{id}", handlers.GetPerson)
+	// Users (renamed from /people)
+	r.Get("/users", handlers.ListUsers)
+	r.Get("/users/{id}", handlers.GetUser)
 
 	// Auth
 	r.Post("/auth/login", handlers.Login)
 
-	// Workspaces — intentionally has no frontend caller (dangling endpoint).
+	// Workspaces — GetWorkspace stays dangling; workspace-bounties is new.
 	r.Get("/workspaces/{id}", handlers.GetWorkspace)
+	r.Get("/workspaces/{id}/bounties", handlers.ListWorkspaceBounties) // new
 
 	return r
 }

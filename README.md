@@ -28,6 +28,15 @@ whose HTTP requests should link to the endpoints defined here.
 `GET /workspaces/{id}` intentionally has no frontend caller — a dangling
 endpoint used to assert the linker does not invent edges.
 
+## Endpoints (`after`)
+
+Delta from `main`:
+
+- **added** `POST /bounties/{id}/assign` (AssignBounty)
+- **added** `GET /workspaces/{id}/bounties` (ListWorkspaceBounties)
+- **renamed** `/people` → `/users`, `/people/{id}` → `/users/{id}`
+- **removed** `DELETE /bounties/{id}`
+
 ## Run
 
 ```bash
