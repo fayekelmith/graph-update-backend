@@ -45,10 +45,24 @@ func UpdateBounty(w http.ResponseWriter, r *http.Request) {
 	writeJSON(w, http.StatusOK, b)
 }
 
-func DeleteBounty(w http.ResponseWriter, r *http.Request) {
+// AssignBounty assigns a bounty to a person (new in the evolved state).
+func AssignBounty(w http.ResponseWriter, r *http.Request) {
 	id := chi.URLParam(r, "id")
-	db.RemoveBounty(id)
-	w.WriteHeader(http.StatusNoContent)
+	var body struct {
+		PersonID string `json:"personId"`
+	}
+	if err := json.NewDecoder(r.Body).Decode(&body); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	b, ok := db.FindBounty(id)
+	if !ok {
+		http.NotFound(w, r)
+		return
+	}
+	b.Status = "assigned:" + body.PersonID
+	db.SaveBounty(b)
+	writeJSON(w, http.StatusOK, b)
 }
 
 func writeJSON(w http.ResponseWriter, status int, v any) {
